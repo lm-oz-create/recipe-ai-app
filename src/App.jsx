@@ -499,7 +499,8 @@ export default function App() {
       notes:       recipe.notes,
       added_by:    recipe.added_by || "Family",
     };
-    if (recipe.id && !recipe.id.toString().startsWith("new")) {
+    const isUUID = recipe.id && /^[0-9a-f-]{36}$/i.test(recipe.id.toString());
+    if (isUUID) {
       await supabase.from("recipes").update(row).eq("id", recipe.id);
     } else {
       await supabase.from("recipes").insert(row);
